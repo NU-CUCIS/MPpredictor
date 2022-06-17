@@ -1,0 +1,230 @@
+.normal-table{
+    width:100%; 
+    margin:0;
+}
+
+.normal-table tr{
+    border: 1px solid #fff; 
+}
+
+.normal-table td{
+    border: 1px solid #fff; 
+}
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    overflow-x: auto;
+    min-width: 100px;
+    max-width: 870px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+}
+
+.styled-table thead tr {
+    background-color: #4E2A84;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #4E2A84;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #4E2A84;
+}
+
+.items { opacity: 0.4; 
+         padding: 20px; 
+         color: #fff; 
+         background: #000; 
+         width: 50px; 
+         height: 30px; 
+         float: left; 
+         margin: 5px;  
+}
+
+.periodic-table{
+    border: none; 
+    width:100%; 
+    margin:0;
+}
+
+.periodic-table input{
+    width:49px;
+    height:49px;
+    padding: 13px 17px;
+    margin: 0px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.periodic-table input.button-style1{
+    width:98px;
+    height:49px;
+    padding: 13px 17px;
+    margin: 0px;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.periodic-table td{
+    width:49px;
+}
+.periodic-table td.last-row{
+    width:49px;
+    height: 20px;
+}
+
+.purple{
+    background-color:#AB91FF;
+}
+
+.dark-orange{
+    background-color:#FFC591;
+}
+
+.orange{
+    background-color:#FFDF91;
+}
+
+.light-orange{
+    background-color:#FFF991;
+}
+
+.dark-green{
+    background-color:#92FF9F;
+}
+
+.green{
+    background-color:#B8FF91;
+}
+
+.light-green{
+    background-color:#D2FF91;
+}
+
+.grey{
+    background-color:#C8C8C8;
+}
+
+.txt-grey{
+    color:#C1C1C1;
+}
+
+.txt-red{
+    color:#FF7777
+}
+
+.pink{
+    background-color:#F991FF;
+}
+
+.blue{
+    background-color:#91DFFF;
+}
+
+.yellow{
+    background-color:#ECFF91;
+}
+
+.txt-white{
+    color: white;
+}
+
+
+.button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.electronicstructure-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #CCCC00;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.magnetism-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #91DFFF;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.elasticity-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #AB91FF;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.conductivity-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ADFF2F;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.stability-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #FF69B4;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.photooptics-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #4169E1;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.electricpotential-button-style1{
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #DC143C;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.width100{
+    width: 100%;
+}

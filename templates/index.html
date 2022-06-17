@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+    <title>Materials Property Predictor</title>
+</head>
+<body>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+  <script type="text/javascript"src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+    <nav id="navbar">
+        <header>Table of Contents</header>
+        <ul>
+          <li><a class="nav-link" href="#Disclaimer">Disclaimer</a></li>
+          <li><a class="nav-link" href="#Description">Description</a></li>
+          <li><a class="nav-link" href="#Prediction">Prediction</a></li>
+          <li><a class="nav-link" href="#Team">Team</a></li>
+          <li><a class="nav-link" href="#Acknowledgements">Acknowledgements</a></li>
+          <li><a class="nav-link" href="#Reference">Reference</a></li>
+        </ul>
+      </nav>
+      <main id="main-doc">
+        <h1>
+          Materials Property Predictor
+        </h1>
+        <section class="main-section" id="Disclaimer">
+            <header>Disclaimer</header>
+            <article>
+              <p style="text-align:justify">
+                The results from this tool are estimates based on data-driven analytics on DFT-computed data. 
+                All results are provided for informational purposes only, in furtherance of the developers' 
+                educational mission, to complement the knowledge of materials scientists and engineers, and 
+                assist them in their search for new materials with desired properties. The developers may not 
+                be held responsible for any decisions based on this tool. 
+              </p>
+            </article>
+        </section>
+        <section class="main-section" id="Description">
+          <header>Description</header>
+          <article>
+            <p style="text-align:justify"> 
+              Welcome to the online materials property predictor. This tool deploys data mining models to predict
+              the various materials properties of a materials (given below)
+              based on its chemical composition or physical attribute as described in the paper presented below.
+              The predictive models deployed here have been built on hundreds
+              of thousands of Density Functional Theory (DFT) calculations on crystalline materials from the
+              Open Quantum Mechanical Database (OQMD) and Joint Automated Repository for Various Integrated Simulations (JARVIS),
+              and run many orders of magnitude faster than DFT. 
+            </p>      
+            <p style="text-align:justify">
+              In order to use this tool, please provide the list of chemical compositions in the text box below, 
+              and click Submit. Please ensure that each chemical formula respects the charge balance condition 
+              with common oxidation states of individual elements. The elements indicated with red color in the
+              period table below may not be used. 
+            </p>
+          </article>
+        </section>
+        <section class="main-section" id="Prediction">
+          <header>Prediction</header>
+            <article> 
+              <input class="electronicstructure-button-style1" id="electronicstructure" type="button" value="electronic structure" onmouseover="mouseOverElectronicStructure()" onmouseout="mouseOutElectronicStructure()" onclick="clickElectronicStructure()">
+              <input class="conductivity-button-style1" id="conductivity" type="button" value="conductivity" onmouseover="mouseOverConductivity()" onmouseout="mouseOutConductivity()" onclick="clickConductivity()">
+              <input class="stability-button-style1" id="stability" type="button" value="stability" onmouseover="mouseOverStability()" onmouseout="mouseOutStability()" onclick="clickStability()">
+              <input class="magnetism-button-style1" id="magnetism" type="button" value="magnetism" onmouseover="mouseOverMagnetism()" onmouseout="mouseOutMagnetism()" onclick="clickMagnetism()">
+              <input class="photooptics-button-style1" id="photooptics" type="button" value="photo optics" onmouseover="mouseOverPhotoOptics()" onmouseout="mouseOutPhotoOptics()" onclick="clickPhotoOptics()">
+              <input class="elasticity-button-style1" id="elasticity" type="button" value="elasticity" onmouseover="mouseOverElasticity()" onmouseout="mouseOutElasticity()" onclick="clickElasticity()">
+              <input class="electricpotential-button-style1" id="electricpotential" type="button" value="electric potential" onmouseover="mouseOverElectricPotential()" onmouseout="mouseOutElectricPotential()" onclick="clickElectricPotential()">
+            <form action="{{ url_for('prediction')}}" id=form method="POST">
+                <p>
+                    Please select the desired materials property to predict  (The calculation may take few seconds depending on number of properties)
+                </p>
+                <table class="normal-table" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td id="all">
+                      <input type="checkbox" id="all" name="all" value="all">
+                      <label id="all" for="all">All</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="klu">
+                      <input type="checkbox" id="klu2" name="klu2" value="klu2">
+                      <label id="klu3" for="klu3">Kpoint Length Unit</label>
+                    </td>
+                    <td id="kpaa">
+                      <input type="checkbox" id="kpaa2" name="kpaa2" value="kpaa2">
+                      <label id="kpaa3" for="kpaa3">Kpoints Array Average</label>
+                    </td>
+                    <td id="bgoptb" >
+                      <input type="checkbox" id="bgoptb2" name="bgoptb2" value="bgoptb2">
+                      <label id="bgoptb3"  for="bgoptb3">Bandgap Optb88vdw</label>
+                    </td>
+                    <td id="deltae">
+                      <input type="checkbox" id="deltae2" name="deltae2" value="deltae2">
+                      <label id="deltae3" for="deltae3">Formation Enthalpy</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="encut">
+                      <input type="checkbox" id="encut2" name="encut2" value="encut2">
+                      <label id="encut3" for="encut3">Encut</label>
+                    </td>
+                    <td id="ehull">
+                      <input type="checkbox" id="ehull2" name="ehull2" value="ehull2">
+                      <label id="ehull3" for="ehull3">Ehull</label>
+                    </td>
+                    <td id="magoszi">
+                      <input type="checkbox" id="magoszi2" name="magoszi2" value="magoszi2">
+                      <label id="magoszi3" for="magoszi3">Magmom Oszicar</label>
+                    </td>
+                    <td id="magout">
+                      <input type="checkbox" id="magout2" name="magout2" value="magout2">
+                      <label id="magout3" for="magout3">Magmom Outcar</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="eps">
+                      <input type="checkbox" id="eps2" name="eps2" value="eps2">
+                      <label id="eps3" for="eps3">Eps Average Root</label>
+                    </td>
+                    <td id="ppf">
+                      <input type="checkbox" id="ppf2" name="ppf2" value="ppf2">
+                      <label id="ppf3" for="ppf3">P Powerfact</label>
+                    </td>
+                    <td id="npf">
+                      <input type="checkbox" id="npf2" name="npf2" value="npf2">
+                      <label id="npf3" for="npf3">N Powerfact</label>
+                    </td>
+                    <td id="pem300k">
+                      <input type="checkbox" id="pem300k2" name="pem300k2" value="pem300k2">
+                      <label id="pem300k3" for="pem300k3">P Effective Masses</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="nem300k" >
+                      <input type="checkbox" id="nem300k2" name="nem300k2" value="nem300k2">
+                      <label id="nem300k3"  for="nem300k3">N Effective Masses</label>
+                    </td>
+                    <td id="psb">
+                      <input type="checkbox" id="psb2" name="psb2" value="psb2">
+                      <label id="psb3" for="psb3">P Seebeck</label>
+                    </td>
+                    <td id="nsb">
+                      <input type="checkbox" id="nsb2" name="nsb2" value="nsb2">
+                      <label id="nsb3" for="nsb3">N Seebeck</label>
+                    </td>
+                    <td id="meps">
+                      <input type="checkbox" id="meps2" name="meps2" value="meps2">
+                      <label id="meps3" for="meps3">Meps Average Root</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="maxm">
+                      <input type="checkbox" id="maxm2" name="maxm2" value="maxm2">
+                      <label id="maxm3" for="maxm3">Max Mode</label>
+                    </td>
+                    <td id="minm">
+                      <input type="checkbox" id="minm2" name="minm2" value="minm2">
+                      <label id="minm3" for="minm3">Min Mode</label><br>
+                    </td>
+                    <td id="etc11">
+                      <input type="checkbox" id="etc112" name="etc112" value="etc112">
+                      <label id="etc113" for="etc113">Elastic Tensor C11</label>
+                    </td>
+                    <td id="etc12">
+                      <input type="checkbox" id="etc122" name="etc122" value="etc122">
+                      <label id="etc123" for="etc123">Elastic Tensor C12</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="etc13">
+                      <input type="checkbox" id="etc132" name="etc132" value="etc132">
+                      <label id="etc133" for="etc133">Elastic Tensor C13</label>
+                    </td>
+                    <td id="etc22">
+                      <input type="checkbox" id="etc222" name="etc222" value="etc222">
+                      <label id="etc223" for="etc223">Elastic Tensor C22</label>
+                    </td>
+                    <td id="etc33">
+                      <input type="checkbox" id="etc332" name="etc332" value="etc332">
+                      <label id="etc333" for="etc333">Elastic Tensor C33</label>
+                    </td>
+                    <td id="etc44">
+                      <input type="checkbox" id="etc442" name="etc442" value="etc442">
+                      <label id="etc443" for="etc443">Elastic Tensor C44</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="etc55">
+                      <input type="checkbox" id="etc552" name="etc552" value="etc552">
+                      <label id="etc553" for="etc553">Elastic Tensor C55</label>
+                    </td>
+                    <td id="etc66">
+                      <input type="checkbox" id="etc662" name="etc662" value="etc662">
+                      <label id="etc663" for="etc663">Elastic Tensor C66</label>
+                    </td>
+                    <td id="bulk">
+                      <input type="checkbox" id="bulk2" name="bulk2" value="bulk2">
+                      <label id="bulk3" for="bulk3">Bulk Modulus Kv</label>
+                    </td>
+                    <td id="shear">
+                      <input type="checkbox" id="shear2" name="shear2" value="shear2">
+                      <label id="shear3" for="shear3">Shear Modulus Gv</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="bgmbj">
+                      <input type="checkbox" id="bgmbj2" name="bgmbj2" value="bgmbj2">
+                      <label id="bgmbj3" for="bgmbj3">Bandgap Mbj</label>
+                    </td>
+                    <td id="spillage">
+                      <input type="checkbox" id="spillage2" name="spillage2" value="spillage2">
+                      <label id="spillage3" for="spillage3">Spillage</label>
+                    </td>
+                    <td id="slme">
+                      <input type="checkbox" id="slme2" name="slme2" value="slme2">
+                      <label id="slme3" for="slme3">Slme</label>
+                    </td>
+                    <td id="maxirm">
+                      <input type="checkbox" id="maxirm2" name="maxirm2" value="maxirm2">
+                      <label id="maxirm3" for="maxirm3">Max Ir Mode</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="minirm">
+                      <input type="checkbox" id="minirm2" name="minirm2" value="minirm2">
+                      <label id="minirm3" for="minirm3">Min Ir Mode</label>
+                    </td>
+                    <td id="pmdiel">
+                      <input type="checkbox" id="pmdiel2" name="pmdiel2" value="pmdiel2">
+                      <label id="pmdiel3" for="pmdiel3">Dfpt PM Dielectric Electronic</label>
+                    </td>
+                    <td id="pmdi">
+                      <input type="checkbox" id="pmdi2" name="pmdi2" value="pmdi2">
+                      <label id="pmdi3" for="pmdi3">Dfpt PM Dielectric</label>
+                    </td>
+                    <td id="pmdiio">
+                      <input type="checkbox" id="pmdiio2" name="pmdiio2" value="pmdiio2">
+                      <label id="pmdiio3" for="pmdiio3">Dfpt PM Dielectric Ioonic</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="pmeij">
+                      <input type="checkbox" id="pmeij2" name="pmeij2" value="pmeij2">
+                      <label id="pmeij3" for="pmeij3">Dfpt PM Eij</label><br>
+                    </td>
+                    <td id="pmdij">
+                      <input type="checkbox" id="pmdij2" name="pmdij2" value="pmdij2">
+                      <label id="pmdij3" for="pmdij3">Dfpt PM Dij</label>
+                    </td>
+                    <td id="exfoli">
+                      <input type="checkbox" id="exfoli2" name="exfoli2" value="exfoli2">
+                      <label id="exfoli3" for="exfoli3">Exfoliation Energy</label><br>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="exptdeltae">
+                      <input type="checkbox" id="exptdeltae2" name="exptdeltae2" value="exptdeltae2">
+                      <label id="exptdeltae3" for="exptdeltae3">Expt. Formation Energy</label><br>
+                    </td>
+                    <td id="exptbandgap">
+                      <input type="checkbox" id="exptbandgap2" name="exptbandgap2" value="exptbandgap2">
+                      <label id="exptbandgap3" for="exptbandgap3">Expt. Bandgap</label>
+                    </td>
+                  </tr>
+                </table>  
+                <p>
+                  Please enter chemical composition below
+                </p>
+                <table class="periodic-table" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td><input class ="purple" type="button" id="H" value="H" onclick="H_Button()"></td>
+                    <td ></td><td></td><td></td> <td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td ></td><td ></td><td ></td><td ></td>
+                    <td><input class ="txt-red blue" type="button" value="He"></td>
+                  </tr>
+                  <tr>
+                    <td><input class ="dark-orange" type="button" value="Li" onclick="Li_Button()"></td>
+                    <td><input class ="orange" type="button" value="Be" onclick="Be_Button()"></td>
+                    <td ></td><td ></td><td ></td><td ></td><td ></td>
+                    <td></td><td ></td><td ></td><td ></td><td ></td>
+                    <td><input class ="dark-green" type="button" value="B" onclick="B_Button()"></td>
+                    <td><input class ="purple" type="button" value="C" onclick="C_Button()"></td>
+                    <td><input class ="purple" type="button" value="N" onclick="N_Button()"></td>
+                    <td><input class ="purple" type="button" value="O" onclick="O_Button()"></td>
+                    <td><input class ="pink" type="button" value="F" onclick="F_Button()"></td>
+                    <td><input class ="txt-red blue" type="button" value="Ne"></td>
+                  </tr>
+                  <tr>
+                    <td><input class ="dark-orange" type="button" value="Na" onclick="Na_Button()"></td>
+                    <td> <input class ="orange" type="button" value="Mg" onclick="Mg_Button()"></td>
+                    <td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td><td ></td>
+                    <td><input class ="light-orange" type="button" value="Al" onclick="Al_Button()"></td>
+                    <td><input class ="dark-green" type="button" value="Si" onclick="Si_Button()"></td>
+                    <td><input class ="purple" type="button" value="P" onclick="P_Button()"></td>
+                    <td><input class ="purple" type="button" value="S" onclick="S_Button()"></td>
+                    <td><input class ="pink" type="button" value="Cl" onclick="Cl_Button()"></td>
+                    <td><input class ="txt-red blue" type="button" value="Ar"></td>
+                  </tr>
+                  <tr>
+                    <td><input class ="dark-orange" type="button" value="K" onclick="K_Button()"></td>
+                    <td><input class ="orange" type="button" value="Ca" onclick="Ca_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Sc" onclick="Sc_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ti" onclick="Ti_Button()"></td>
+                    <td><input class ="yellow" type="button" value="V" onclick="V_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Cr" onclick="Cr_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Mn" onclick="Mn_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Fe" onclick="Fe_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Co" onclick="Co_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ni" onclick="Ni_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Cu" onclick="Cu_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Zn" onclick="Zn_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="Ga" onclick="Ga_Button()"></td>
+                    <td><input class ="dark-green" type="button" value="Ge" onclick="Ge_Button()"></td>
+                    <td><input class ="dark-green" type="button" value="As" onclick="As_Button()"></td>
+                    <td><input class ="purple" type="button" value="Se" onclick="Se_Button()"></td>
+                    <td><input class ="pink" type="button" value="Br" onclick="Br_Button()"></td>
+                    <td><input class ="blue" type="button" value="Kr" onclick="Kr_Button()"></td>
+                  </tr>
+                  <tr>
+                    <td><input class ="dark-orange" type="button" value="Rb" onclick="Rb_Button()"></td>
+                    <td><input class ="orange" type="button" value="Sr" onclick="Sr_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Y" onclick="Y_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Zr" onclick="Zr_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Nb" onclick="Nb_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Mo" onclick="Mo_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Tc" onclick="Tc_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ru" onclick="Ru_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Rh" onclick="Rh_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Pd" onclick="Pd_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ag" onclick="Ag_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Cd" onclick="Cd_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="In" onclick="In_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="Sn" onclick="Sn_Button()"></td>
+                    <td><input class ="dark-green" type="button" value="Sb" onclick="Sb_Button()"></td>
+                    <td><input class ="dark-green" type="button" value="Te" onclick="Te_Button()"></td>
+                    <td><input class ="pink" type="button" value="I" onclick="I_Button()"></td>
+                    <td><input class ="blue" type="button" value="Xe" onclick="Xe_Button()"></td>
+                  </tr>
+                  <tr>
+                    <td><input class ="dark-orange" type="button" value="Cs" onclick="Cs_Button()"></td>
+                    <td><input class ="orange" type="button" value="Ba" onclick="Ba_Button()"></td>
+                    <td><input class="light-green" type="button" value="La*" onclick="La_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Hf" onclick="Hf_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ta" onclick="Ta_Button()"></td>
+                    <td><input class ="yellow" type="button" value="W" onclick="W_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Re" onclick="Re_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Os" onclick="Os_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Ir" onclick="Ir_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Pt" onclick="Pt_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Au" onclick="Au_Button()"></td>
+                    <td><input class ="yellow" type="button" value="Hg" onclick="Hg_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="Tl" onclick="Tl_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="Pb" onclick="Pb_Button()"></td>
+                    <td><input class ="light-orange" type="button" value="Bi" onclick="Bi_Button()"></td>
+                    <td><input class="txt-red dark-green" type="button" value="Po"></td>
+                    <td><input class="txt-red pink" type="button" value="At"></td>
+                    <td><input class="txt-red blue" type="button" value="Rn"></td>
+                  </tr>
+                  <tr>
+                    <td><input class="txt-red dark-orange" type="button"  value="Fr"></td>
+                    <td><input class="txt-red orange" type="button"  value="Ra"></td>
+                    <td><input class="green" type="button"  value="Ac**" onclick="Ac_Button()"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Rf"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Db"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Sg"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Bh"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Hs"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Mt"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Ds"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Rg"></td>
+                    <td><input class="txt-red yellow" type="button"  value="Cn"></td>
+                    <td><input class="txt-red grey" type="button"  value="Nh"></td>
+                    <td><input class="txt-red grey" type="button"  value="Fl"></td>
+                    <td><input class="txt-red grey" type="button"  value="Mc"></td>
+                    <td><input class="txt-red grey" type="button"  value="Lv"></td>
+                    <td><input class="txt-red grey" type="button"  value="Ts"></td>
+                    <td><input class="txt-red grey" type="button"  value="Og"></td>
+                  </tr>
+                  <tr>
+                    <td class="last-row"></td>
+                  </tr>
+                  <tr>
+                    <td></td><td></td>
+                    <td style="text-align: right;">*</td>
+                    <td><input class="light-green" type="button" value="Ce" onclick="Ce_Button()"></td>
+                    <td><input class="light-green" type="button" value="Pr" onclick="Pr_Button()"></td>
+                    <td><input class="light-green" type="button" value="Nd" onclick="Nd_Button()"></td>
+                    <td><input class="light-green" type="button" value="Pm" onclick="Pm_Button()"></td>
+                    <td><input class="light-green" type="button" value="Sm" onclick="Sm_Button()"></td>
+                    <td><input class="light-green" type="button" value="Eu" onclick="Eu_Button()"></td>
+                    <td><input class="light-green" type="button" value="Gd" onclick="Gd_Button()"></td>
+                    <td><input class="light-green" type="button" value="Tb" onclick="Tb_Button()"></td>
+                    <td><input class="light-green" type="button" value="Dy" onclick="Dy_Button()"></td>
+                    <td><input class="light-green" type="button" value="Ho" onclick="Ho_Button()"></td>
+                    <td><input class="light-green" type="button" value="Er" onclick="Er_Button()"></td>
+                    <td><input class="light-green" type="button" value="Tm" onclick="Tm_Button()"></td>
+                    <td><input class="light-green" type="button" value="Yb" onclick="Yb_Button()"></td>
+                    <td><input class="light-green" type="button" value="Lu" onclick="Lu_Button()"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td></td><td></td>
+                    <td style="text-align: right;">**</td>
+                    <td><input class="green" type="button" value="Th" onclick="Th_Button()"></td>
+                    <td><input class="green" type="button" value="Pa" onclick="Pa_Button()"></td>
+                    <td><input class="green" type="button" value="U" onclick="U_Button()"></td>
+                    <td><input class="green" type="button" value="Np" onclick="Np_Button()"></td>
+                    <td><input class="green" type="button" value="Pu" onclick="Pu_Button()"></td>
+                    <td><input class="txt-red green" type="button" value="Am"></td>
+                    <td><input class="txt-red green" type="button" value="Cm"></td>
+                    <td><input class="txt-red green" type="button" value="Bk"></td>
+                    <td><input class="txt-red green" type="button" value="Cf"></td>
+                    <td><input class="txt-red green" type="button" value="Es"></td>
+                    <td><input class="txt-red green" type="button" value="Fm"></td>
+                    <td><input class="txt-red green" type="button" value="Md"></td>
+                    <td><input class="txt-red green" type="button" value="No"></td>
+                    <td><input class="txt-red green" type="button" value="Lr"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="last-row"></td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><input type="button" id="1" value="1" onclick="num1_Button()"></td>
+                    <td><input type="button" id="2" value="2" onclick="num2_Button()"></td>
+                    <td><input type="button" id="3" value="3" onclick="num3_Button()"></td>
+                    <td><input type="button" id="4" value="4" onclick="num4_Button()"></td>
+                    <td><input type="button" id="5" value="5" onclick="num5_Button()"></td>
+                    <td><input type="button" id="6" value="6" onclick="num6_Button()"></td>
+                    <td><input type="button" id="7" value="7" onclick="num7_Button()"></td>
+                    <td><input type="button" id="8" value="8" onclick="num8_Button()"></td>
+                    <td><input type="button" id="9" value="9" onclick="num9_Button()"></td>
+                    <td><input type="button" id="0" value="0" onclick="num0_Button()"></td>
+                    <td colspan="2"><input class="button-style1" type="button" id="space" value="space" onclick="space_Button()"></td>
+                    <td colspan="2"><input class="button-style1" type="button" id="delete" value="delete" onclick="delete_Button()"></td>
+                    <td colspan="2"><input class="button-style1" type="button" id="clear" value="clear" onclick="clear_Button()"></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td class="last-row"></td>
+                  </tr>
+                </table>
+                <input class="button-style1 width100" id="compounds" name="compounds" class="compounds" type=text 
+                placeholder= "Enter Your Chemical Compositions Here">
+                <p>
+                    Example input for chemical composition: <i>GaTe Fe3S4 GeO2 PrAl2Ni3 P2Ni2Zr NaMnTe2 Te3Pr</i>
+                </p>
+                <button class="button-style1" type="submit">
+                    Submit
+                </button>
+            </form>  
+          </article>
+        </section>
+        <section class="main-section" id="Team">
+            <header>Team</header>
+            <article>
+              <p>
+                Developer Team: 
+                <a href="https://sites.northwestern.edu/vgf3011/" target="_blank">Vishu Gupta</a>, 
+                <a href="http://users.eecs.northwestern.edu/~ankitag" target="_blank">Ankit Agrawal</a>,
+                <a href="http://users.eecs.northwestern.edu/~wkliao" target="_blank">Wei-keng Liao</a>,
+                <a href="http://users.eecs.northwestern.edu/~choudhar" target="_blank">Alok Choudhary</a>
+              </p>
+        
+              <p>
+                Collaborators:
+                <a href="https://www.nist.gov/people/kamal-choudhary" target="_blank">Kamal Choudhary</a>,
+                <a href="https://www.nist.gov/people/francesca-tavazza" target="_blank">Francesca Tavazza</a>,
+                <a href="https://www.nist.gov/people/carelyn-e-campbell" target="_blank">Carelyn Campbell</a>
+              </p>
+            </article>
+          </section>
+        <section class="main-section" id="Acknowledgements">
+          <header>Acknowledgements</header>
+          <article>
+            <p>
+              This work was performed under the following financial assistance award 70NANB19H005 from U.S. Department of Commerce, National Institute of Standards and Technology as part of the Center for Hierarchical Materials Design (CHiMaD). Partial support is also acknowledged from DOE awards DE-SC0014330, DE-SC0019358.
+            </p>
+          </article>
+        </section>
+        <section class="main-section" id="Reference">
+          <header>Reference</header>
+          <article>
+            <ul>
+              <li>
+                Gupta, V., Choudhary, K., Tavazza, F., Campbell, C., Liao, W.K., Choudhary, A. and Agrawal, A., 2021. Cross-property deep transfer learning framework for enhanced predictive analytics on small materials data. Nature communications, 12(1), pp.1-10. [<a href="https://www.nature.com/articles/s41467-021-26921-5">url</a>] 
+              </li>
+            </ul>
+            <p>
+                <a href="http://cucis.ece.northwestern.edu/" target="_blank">Center for Ultra-scale Computing and Information Security (CUCIS)</a> , EECS Department, Northwestern University, Evanston, IL 60208, USA
+            </p>
+          </article>
+        </section>
+      </main> 
+</body>
+</html>

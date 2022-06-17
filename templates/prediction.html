@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+
+    <title>Materials Property Predictor</title>
+</head>
+<body>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <nav id="navbar">
+        <header>Table of Contents</header>
+        <ul>
+          <li><a class="nav-link" href="#Disclaimer">Disclaimer</a></li>
+          <li><a class="nav-link" href="#Prediction">Prediction</a></li>
+          <li><a class="nav-link" href="#Team">Team</a></li>
+          <li><a class="nav-link" href="#Acknowledgements">Acknowledgements</a></li>
+          <li><a class="nav-link" href="#Reference">Reference</a></li>
+        </ul>
+      </nav>
+      <main id="main-doc">
+        <h1>
+          Materials Property Predictor
+        </h1>
+        <section class="main-section" id="Disclaimer">
+            <header>Disclaimer</header>
+            <article>
+              <p style="text-align:justify">
+                The results from this tool are estimates based on data-driven analytics on DFT-computed data. 
+                All results are provided for informational purposes only, in furtherance of the developers' 
+                educational mission, to complement the knowledge of materials scientists and engineers, and 
+                assist them in their search for new materials with desired properties. The developers may not 
+                be held responsible for any decisions based on this tool. 
+              </p>
+            </article>
+        </section>
+        <section class="main-section" id="Prediction">
+          <header>Prediction</header>
+            <article>
+              <p>
+                The following are the results of the prediction:
+              </p>  
+              <table class="styled-table"　id="predict" name="predict" >
+                <thead>
+                    <tr>
+                        {% for i in range(compounds.shape[0]) %}
+                        <th>{{ compounds[i] }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(results.shape[0]) %}
+                    <tr>
+                      {% for j in range(results.shape[1]) %}
+                      <td>{{ results[i][j] }}</td>
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            <form action="{{ url_for('index')}}" id=form method="POST">
+                <button type="submit" style="padding: 14px 20px;margin: 8px 0;border: none;border-radius: 4px;cursor: pointer;">
+                    Back to Home
+                </button>
+            </form>
+          </article>
+        </section>
+        <section class="main-section" id="Team">
+          <header>Team</header>
+          <article>
+            <p>
+              Developer Team: 
+              <a href="https://sites.northwestern.edu/vgf3011/" target="_blank">Vishu Gupta</a>, 
+              <a href="http://users.eecs.northwestern.edu/~ankitag" target="_blank">Ankit Agrawal</a>,
+              <a href="http://users.eecs.northwestern.edu/~wkliao" target="_blank">Wei-keng Liao</a>,
+              <a href="http://users.eecs.northwestern.edu/~choudhar" target="_blank">Alok Choudhary</a>
+            </p>
+      
+            <p>
+              Collaborators:
+              <a href="https://www.nist.gov/people/kamal-choudhary" target="_blank">Kamal Choudhary</a>,
+              <a href="https://www.nist.gov/people/francesca-tavazza" target="_blank">Francesca Tavazza</a>,
+              <a href="https://www.nist.gov/people/carelyn-e-campbell" target="_blank">Carelyn Campbell</a>
+            </p>
+          </article>
+        </section>
+      <section class="main-section" id="Acknowledgements">
+        <header>Acknowledgements</header>
+        <article>
+          <p>
+            This work was performed under the following financial assistance award 70NANB19H005 from U.S. Department of Commerce, National Institute of Standards and Technology as part of the Center for Hierarchical Materials Design (CHiMaD). Partial support is also acknowledged from DOE awards DE-SC0014330, DE-SC0019358.
+          </p>
+        </article>
+      </section>
+      <section class="main-section" id="Reference">
+        <header>Reference</header>
+        <article>
+          <ul>
+            <li>
+              V. Gupta, K. Choudhary, F. Tavazza, C. Campbell, W-k. Liao, A. Choudhary, and A. Agrawal, "Cross-property deep transfer learning framework for enhanced predictive analytics on small materials data" [<a href="">url</a>] 
+            </li>
+          </ul>
+          <p>
+              <a href="http://cucis.ece.northwestern.edu/" target="_blank">Center for Ultra-scale Computing and Information Security (CUCIS)</a> , EECS Department, Northwestern University, Evanston, IL 60208, USA
+          </p>
+        </article>
+      </section>
+    </main>  
+</body>
+</html>
