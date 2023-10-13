@@ -12,9 +12,9 @@ The work related experiments was performed on Linux Fedora 8.8 Ootpa. The code s
   
 Here is a brief description of the files and folders:
 
-* crossproperty.py : code to launch the predictor.
+* `crossproperty.py`: code to launch the predictor.
 
-* functions.py : code that contains functions to perform featurization.
+* `functions.py`: code that contains functions to perform featurization.
 
 * [`templates`](./templates): folder contains HTML files for the homepage and response page.
 
